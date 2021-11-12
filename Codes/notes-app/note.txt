@@ -1,0 +1,3 @@
+This is appended message using appendFileSync functionThis is appended message using appendFileSync function
+ This is appended message using appendFileSync function
+ This is appended message using appendFileSync function
