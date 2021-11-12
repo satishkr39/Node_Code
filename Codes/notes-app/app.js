@@ -1,6 +1,7 @@
 //const fs = require('fs')
 const a = require('./utils')  // import the function utils
 const notesModule = require('./notes')
+const chalk = require('chalk')
 
 //fs.writeFileSync('notes.txt', 'this file was created by NodeJS')  // writing to a file
 
@@ -18,3 +19,9 @@ const notesModule = require('./notes')
 // callig notes.js function
 
 console.log(notesModule.getNotes())
+
+// chalk module ususage
+console.log(chalk.green('Success in GREEN'))
+console.log(chalk.red('FAILURE IN RED'))
+console.log(chalk.bold('IN BOLD COLOR'))
+console.log(chalk.underline.bold('BOLD AND UNDERLINE'))
