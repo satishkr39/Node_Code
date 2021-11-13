@@ -1,4 +1,5 @@
 const fs = require('fs')
+const chalk = require('chalk')
 console.log('Inside Notes.js file')
 
 function getNotes(){
@@ -8,12 +9,26 @@ function getNotes(){
 function addNotes(title, body){
     console.log('addNotes method called')
     const notes = loadNotes() // calling the loadNotes method
-    notes.push({
+    // check if duplicate titles alrady present then add to duplicateNotes[]
+    const duplicateNotes = notes.filter(function(notes){
+        return notes.title === title
+    })
+
+    // if not duplicates notes found
+    if(duplicateNotes.length === 0){
+         // method to add items to array is push
+        notes.push({
         title: title,
         body: body
-    })
-    //console.log(notes)
-    saveNotes(notes)
+        })
+       
+        //console.log(notes)
+        saveNotes(notes)
+        console.log(chalk.green('New notes added'))
+    }else{
+        console.log(chalk.red('Note title taken!'))
+    }
+
 }
 
 function saveNotes(notes){
