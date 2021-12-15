@@ -6,12 +6,13 @@ function getNotes(){
     return "Your notes"
 }
 
+// addNotes function
 function addNotes(title, body){
     console.log('addNotes method called')
     const notes = loadNotes() // calling the loadNotes method
     // check if duplicate titles alrady present then add to duplicateNotes[]
     const duplicateNotes = notes.filter(function(notes){
-        return notes.title === title
+        return notes.title === title  // match the new title give by user with existing title
     })
 
     // if not duplicates notes found
@@ -24,7 +25,7 @@ function addNotes(title, body){
        
         //console.log(notes)
         saveNotes(notes)
-        console.log(chalk.green('New notes added'))
+        console.log(chalk.green('New notes added')) 
     }else{
         console.log(chalk.red('Note title taken!'))
     }
@@ -49,7 +50,22 @@ function loadNotes(){
     }
 }
 
+// remove notes function
+function removeNotes(title){
+    console.log('Remove notes called')
+    const notes = loadNotes()
+    const notesToKeep = notes.filter(function(notes){
+        return notes.title !== title
+    })
+    // console.log(chalk.red('removing note with title : ', getNote))
+    if(notes.length ==  notesToKeep.length){
+        console.log(chalk.red('no notes found to remove'))
+    }else{
+        console.log(chalk.red('removing notes'))
+        saveNotes(notesToKeep)
+    }
+}
 
 
 // exporting the function
-module.exports = {getNotes, addNotes}
+module.exports = {getNotes, addNotes, removeNotes}

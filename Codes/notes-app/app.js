@@ -74,8 +74,16 @@ yargs.command({
 yargs.command({
     command : 'remove',
     describe : 'remove a note',
-    handler : function(){
-        console.log('Removing notes')
+    builder:{
+        title:{
+            describe: 'Enter title',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler : function(argv){
+        chalk.red(console.log('Removing notes'))
+        notesModule.removeNotes(argv.title)
     }
 })
 
@@ -101,3 +109,9 @@ yargs.command({
 // using yargs module
 yargs.parse() // to make the command line argument available to yars
 // console.log(yargs.argv)  // node app.js --help ENTER : it will show the add in the commands section 
+
+
+
+// GUIDE TO RUN PROGRAM
+// to call add method : node app.js add --title="any title" --body="any message"
+// TO CALL REMOVE METHOD : node app.js remove --title="TITLE"  
