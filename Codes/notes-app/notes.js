@@ -78,6 +78,7 @@ const listNotes = () =>{
 readNotes = (titleToSearch) =>{
     console.log("read notes method called")
     allNotes = loadNotes()  // get all the notes
+    debugger  // will pause here in debug mode
     // console.log(allNotes)
     // console.log(titleToSearch)
     notesToFind = allNotes.find((notes)=>{
