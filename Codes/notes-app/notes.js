@@ -2,18 +2,16 @@ const fs = require('fs')
 const chalk = require('chalk')
 console.log('Inside Notes.js file')
 
-function getNotes(){
-    return "Your notes"
-}
 
 // addNotes function
-function addNotes(title, body){
+const addNotes = (title, body) => {
     console.log('addNotes method called')
     const notes = loadNotes() // calling the loadNotes method
     // check if duplicate titles alrady present then add to duplicateNotes[]
-    const duplicateNotes = notes.filter(function(notes){
-        return notes.title === title  // match the new title give by user with existing title
-    })
+    const duplicateNotes = notes.filter((notes)=>notes.title === title)
+    // const duplicateNotes = notes.filter(function(notes){
+    //     return notes.title === title  // match the new title give by user with existing title
+    // })
 
     // if not duplicates notes found
     if(duplicateNotes.length === 0){
@@ -25,9 +23,9 @@ function addNotes(title, body){
        
         //console.log(notes)
         saveNotes(notes)
-        console.log(chalk.green('New notes added')) 
+        console.log(chalk.green.bgGreen('New notes added')) 
     }else{
-        console.log(chalk.red('Note title taken!'))
+        console.log(chalk.red.bgRed('Note title taken!'))
     }
 
 }
@@ -51,7 +49,7 @@ function loadNotes(){
 }
 
 // remove notes function
-function removeNotes(title){
+const removeNotes = (title) => {
     console.log('Remove notes called')
     const notes = loadNotes()
     const notesToKeep = notes.filter(function(notes){
@@ -59,13 +57,43 @@ function removeNotes(title){
     })
     // console.log(chalk.red('removing note with title : ', getNote))
     if(notes.length ==  notesToKeep.length){
-        console.log(chalk.red('no notes found to remove'))
+        console.log(chalk.white.bgRed('no notes found to remove'))
     }else{
-        console.log(chalk.red('removing notes'))
+        console.log(chalk.red.bgGreen('removing notes'))
         saveNotes(notesToKeep)
     }
 }
 
 
+const listNotes = () =>{
+    //console.log("list notes method called")
+    allNotes = loadNotes()
+    //console.log(JSON.stringify(allNotes))
+    for(let x in allNotes){
+        console.log(+x+": Title is : "+allNotes[x].title)
+    }
+}
+
+// read notes function 
+readNotes = (titleToSearch) =>{
+    console.log("read notes method called")
+    allNotes = loadNotes()  // get all the notes
+    // console.log(allNotes)
+    // console.log(titleToSearch)
+    notesToFind = allNotes.find((notes)=>{
+        // console.log(titleToSearch, notes.title)
+        return notes.title == titleToSearch;
+    });
+    // console.log(notesToFind)
+    if(notesToFind){
+        // console.log(notesToFind) // return 1 itme JSON object
+        console.log(chalk.green("notes found"))
+        console.log("BODY: "+notesToFind.body)
+    }
+    else{
+        console.log(chalk.red("no notes found"))
+    }
+}
+
 // exporting the function
-module.exports = {getNotes, addNotes, removeNotes}
+module.exports = {addNotes, removeNotes, listNotes, readNotes}

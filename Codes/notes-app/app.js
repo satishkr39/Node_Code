@@ -62,7 +62,7 @@ yargs.command({
         }
 
     },
-    handler : function(argv){
+    handler(argv){
         console.log('Called Add Function')
         console.log('Title Passed is : ',argv.title)
         console.log('Body passed is : ', argv.body)
@@ -81,7 +81,7 @@ yargs.command({
             type: 'string'
         }
     },
-    handler : function(argv){
+    handler(argv){
         chalk.red(console.log('Removing notes'))
         notesModule.removeNotes(argv.title)
     }
@@ -91,8 +91,9 @@ yargs.command({
 yargs.command({
     command : 'list',
     describe : 'list all notes',
-    handler : function(){
-        console.log('Listing all the notes')
+    handler (){
+        console.log(chalk.green('Listing all the notes'))
+        notesModule.listNotes() // call the listNotes method
     }
 })
 
@@ -100,10 +101,19 @@ yargs.command({
 yargs.command({
     command : 'read',
     describe: 'reading the commands',
-    handler : function(){
+    builder:{
+        title:{
+            describe: 'Enter title',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler (argv){
         console.log('Reading notes')
+        notesModule.readNotes(argv.title)
     }
 })
+
 
 
 // using yargs module
@@ -115,3 +125,5 @@ yargs.parse() // to make the command line argument available to yars
 // GUIDE TO RUN PROGRAM
 // to call add method : node app.js add --title="any title" --body="any message"
 // TO CALL REMOVE METHOD : node app.js remove --title="TITLE"  
+// TO CALL LIST NOTES : node app.js list
+// TO CALL READ NOTES : node app.js read title="some title"
