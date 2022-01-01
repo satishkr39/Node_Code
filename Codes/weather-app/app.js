@@ -1,38 +1,33 @@
 // weather app
 // make call to weatherstack.com
-const request = require('request')
+const geoCode = require('./utils/geocode')
+const forecast = require('./utils/forecast')
 
-const url = "http://api.weatherstack.com/current?access_key=a0363848e9a8e08c3c14df2366ec8adb&query=37.8267,-122.4233"
-
-// setting json:true parse the data to true itself.
-request({url: url, json:true}, (error, response) =>{
+const address = process.argv[2]
+// process.argv[2] is to get the location from command line
+geoCode.geoCode(address, (error, data) =>{
+    // if user doesn't provide any location while executing the program 
+    if (!address){
+        return console.log('Please provide a location to search')
+    }
     if(error){
-        console.log('Unable to connect ot weatherstack service!')
+        return console.log(error)
     }
-    else if(response.body.error){
-        console.log('Please specify proper location')
-    }
-    else{
-        //const data = JSON.parse(response.body) // parase the JSON data
-        console.log(response.body.current) // get the current info only
-    }
-   
+    // callback chaining. calling a callback inside another callback
+    forecast.forecast(data.latitude, data.longitude, (error, forecastData) => {
+        if(error){
+            return console.log('Error: ', error)
+        }
+        console.log('Location: ',forecastData.location.region)
+        console.log('The temperature is : ', forecastData.current.temperature+" Degree Celcius")
+    })
 })
 
-// get geo-location from mapbox api
-const urlGeoLocation = "https://api.mapbox.com/geocoding/v5/mapbox.places/Los%20Angeles.json?access_token=pk.eyJ1Ijoic2F0aXNoa3I2MzkiLCJhIjoiY2t4b3I1bWZwMDJrNDJwbzIxZjB6bXY3cCJ9.KR7UTWnMLZyPXXLd8mHuDg"
-request({ url: urlGeoLocation, json:true }, (error, response) =>{
-    if(error){
-        console.log('Unable to access mapbox service!')
-    }
-    else if(response.body.features.length == 0){
-        console.log('Unable to find location. Please search different one.')
-    }
-    else{
-        const latitude = response.body.features[0].center[1]
-        const longitude = response.body.features[0].center[0]
-        console.log(latitude, longitude)
-        //console.log(response.body.features[0])  // get the response body and then features
-    }
-    
-})
+// command to get user input from command line arguments 
+console.log('Location provided is : '+process.argv[2])
+// console.log(process.argv.length)
+
+
+// to execute the weather app
+// node app.js location name hit enter
+// to search for a location having more than 1 word use : node app.js "New York"    
