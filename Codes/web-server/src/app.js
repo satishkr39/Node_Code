@@ -51,17 +51,35 @@ app.get('/about', (req, res) =>{
 app.get('/help', (req, res) =>{
     //res.send('Help Page')
     res.render('help', {
-        message : 'Message sent from app.js',
-        title : 'Title for Help Message',
+        message : 'Message sent from app.js : HELP ROUTE',
+        title : 'Title for Help Message from HELP ROUT',
         name : 'satish kumar'
     })
 })
+// route help specific error
+app.get('/help/*', (req, res) =>{
+    res.render('error', {
+        title: 'Help Error Message',
+        errorMessage : 'Help Error Message'
+    })
+})
+
 
 // weather page
 app.get('/weather', (req, res) =>{
     res.send({
         location : 'Bihar',
         temperature : 30
+    })
+})
+
+// 404 page
+app.get('*', (req, res) => {
+    //res.send("Error Page")
+    res.render('error', {
+        title: 'Error 404 Message',
+        name : 'Satish Singh',
+        errorMessage : 'Error : 404 Page Not Found'
     })
 })
 
