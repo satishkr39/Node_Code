@@ -1,6 +1,9 @@
 const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
+const geoCode = require('./utils/geocode')
+const forecast = require('./utils/forecast')
+
 // console.log(__dirname) // gives directory name of the file
 // console.log(path.join(__dirname, '..')) // one location up of our directory
 console.log(path.join(__dirname, '../public'))
@@ -65,11 +68,55 @@ app.get('/help/*', (req, res) =>{
 })
 
 
-// weather page
+// weather page : modify to make it accept address from user.
 app.get('/weather', (req, res) =>{
+    if(!req.query.address){
+        return res.send({
+            errorMessage : 'You must provide address'
+        })
+    }
+    console.log(req.query.address)   
+    geoCode.geoCode(req.query.address, (error, {latitude, longitude, location} = {}) =>{
+    // if user doesn't provide any location while executing the program 
+    if(error){
+        return res.send({
+            errorMessage :error
+        })
+    }
+    // callback chaining. calling a callback inside another callback
+    forecast.forecast(latitude, longitude, (error, forecastData) => {
+        if(error){
+            return res.send({
+                errorMessage : error
+            })
+        }
+        res.send({
+            address : location,
+            forcastData : forecastData.location.region,
+            temperature : forecastData.current.temperature
+        })
+               
+    })
+    
+})
+    // res.send({
+    //     location : 'Bihar',
+    //     temperature : 30,
+    //     address : req.query.address
+    // })
+})
+
+// query string setup
+app.get('/product', (req, res) =>{
+    console.log(req.query) // prints the query string 
+    console.log(req.query.search)  // to grab individual values
+    if(!req.query.search){
+        return res.send({
+            error: 'YOu must provide search term'
+        })
+    }
     res.send({
-        location : 'Bihar',
-        temperature : 30
+        products : []
     })
 })
 
