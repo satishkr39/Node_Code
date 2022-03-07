@@ -137,4 +137,6 @@ app.listen(3000, () => {
 
 
 // to execute the application : node src/app.js
-//
+// to execute app from browser : node src/app.js
+// to get weather info from web browser : go to url bar and type http://localhost:3000/weather?address=Gujarat 
+// weather info will be displayed in webpage.
